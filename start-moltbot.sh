@@ -251,32 +251,28 @@ if (isOpenAI) {
     config.agents.defaults.models['openai/gpt-4.5-preview'] = { alias: 'GPT-4.5' };
     config.agents.defaults.model.primary = 'openai/gpt-5.2';
 } else if (baseUrl) {
-    console.log('Configuring Anthropic provider with base URL:', baseUrl);
+    console.log('Configuring Openrouter provider with base URL:', baseUrl);
     config.models = config.models || {};
     config.models.providers = config.models.providers || {};
     const providerConfig = {
         baseUrl: baseUrl,
-        api: 'anthropic-messages',
+        api: 'openai-completions',
         models: [
-            { id: 'claude-opus-4-5-20251101', name: 'Claude Opus 4.5', contextWindow: 200000 },
-            { id: 'claude-sonnet-4-5-20250929', name: 'Claude Sonnet 4.5', contextWindow: 200000 },
-            { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5', contextWindow: 200000 },
+            { id: 'free', name: 'free', contextWindow: 200000 },
         ]
     };
     // Include API key in provider config if set (required when using custom baseUrl)
-    if (process.env.ANTHROPIC_API_KEY) {
-        providerConfig.apiKey = process.env.ANTHROPIC_API_KEY;
-    }
-    config.models.providers.anthropic = providerConfig;
+    # if (process.env.ANTHROPIC_API_KEY) {
+    #     providerConfig.apiKey = process.env.ANTHROPIC_API_KEY;
+    # }
+    config.models.providers.openrouter = providerConfig;
     // Add models to the allowlist so they appear in /models
     config.agents.defaults.models = config.agents.defaults.models || {};
-    config.agents.defaults.models['anthropic/claude-opus-4-5-20251101'] = { alias: 'Opus 4.5' };
-    config.agents.defaults.models['anthropic/claude-sonnet-4-5-20250929'] = { alias: 'Sonnet 4.5' };
-    config.agents.defaults.models['anthropic/claude-haiku-4-5-20251001'] = { alias: 'Haiku 4.5' };
-    config.agents.defaults.model.primary = 'anthropic/claude-opus-4-5-20251101';
+    config.agents.defaults.models['openrouter/free'] = { alias: 'free' };
+    config.agents.defaults.model.primary = 'openrouter/free';
 } else {
-    // Default to Anthropic without custom base URL (uses built-in pi-ai catalog)
-    config.agents.defaults.model.primary = 'anthropic/claude-opus-4-5';
+    // Default to Openrouter without custom base URL (uses built-in pi-ai catalog)
+    config.agents.defaults.model.primary = 'openrouter/free';
 }
 
 // Write updated config
