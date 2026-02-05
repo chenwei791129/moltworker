@@ -262,9 +262,9 @@ if (isOpenAI) {
         ]
     };
     // Include API key in provider config if set (required when using custom baseUrl)
-    # if (process.env.ANTHROPIC_API_KEY) {
-    #     providerConfig.apiKey = process.env.ANTHROPIC_API_KEY;
-    # }
+    if (process.env.AI_GATEWAY_API_KEY) {
+        providerConfig.apiKey = process.env.AI_GATEWAY_API_KEY;
+    }
     config.models.providers.openrouter = providerConfig;
     // Add models to the allowlist so they appear in /models
     config.agents.defaults.models = config.agents.defaults.models || {};
