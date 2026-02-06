@@ -20,13 +20,19 @@ config.agents.defaults.model = config.agents.defaults.model || {};
 config.gateway = config.gateway || {};
 config.channels = config.channels || {};
 
-// Clean up any broken anthropic provider config from previous runs
-// (older versions didn't include required 'name' field)
-if (config.models?.providers?.anthropic?.models) {
-    const hasInvalidModels = config.models.providers.anthropic.models.some(m => !m.name);
-    if (hasInvalidModels) {
-        console.log('Removing broken anthropic provider config (missing model names)');
-        delete config.models.providers.anthropic;
+// Remove anthropic provider - we only use openrouter in this deployment
+if (config.models?.providers?.anthropic) {
+    console.log('Removing anthropic provider config (using openrouter instead)');
+    delete config.models.providers.anthropic;
+}
+
+// Also clean up anthropic model references from agents.defaults.models
+if (config.agents?.defaults?.models) {
+    const modelsToRemove = Object.keys(config.agents.defaults.models)
+        .filter(key => key.startsWith('anthropic/'));
+    if (modelsToRemove.length > 0) {
+        console.log('Removing anthropic model references:', modelsToRemove);
+        modelsToRemove.forEach(key => delete config.agents.defaults.models[key]);
     }
 }
 
