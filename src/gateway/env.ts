@@ -16,6 +16,8 @@ export function buildEnvVars(env: MoltbotEnv): Record<string, string> {
   // AI Gateway vars take precedence
   // Map to the appropriate provider env var based on the gateway endpoint
   if (env.AI_GATEWAY_API_KEY) {
+    // Also pass AI_GATEWAY_API_KEY itself for update-config.js
+    envVars.AI_GATEWAY_API_KEY = env.AI_GATEWAY_API_KEY;
     if (isOpenAIGateway) {
       envVars.OPENAI_API_KEY = env.AI_GATEWAY_API_KEY;
     } else {
