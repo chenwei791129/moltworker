@@ -133,8 +133,7 @@ fi
 # ============================================================
 # UPDATE CONFIG FROM ENVIRONMENT VARIABLES
 # ============================================================
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-node "$SCRIPT_DIR/scripts/update-config.js"
+node /usr/local/lib/moltbot/update-config.js
 
 # ============================================================
 # START GATEWAY

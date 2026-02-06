@@ -32,9 +32,10 @@ RUN mkdir -p /root/.clawdbot \
     && mkdir -p /root/clawd \
     && mkdir -p /root/clawd/skills
 
-# Copy startup script
-# Build cache bust: 2026-01-28-v26-browser-skill
+# Copy startup script and helper scripts
+# Build cache bust: 2026-02-06-v27-update-config-script
 COPY start-moltbot.sh /usr/local/bin/start-moltbot.sh
+COPY scripts/ /usr/local/lib/moltbot/
 RUN chmod +x /usr/local/bin/start-moltbot.sh
 
 # Copy default configuration template
