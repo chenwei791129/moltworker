@@ -100,6 +100,13 @@ if (process.env.SLACK_BOT_TOKEN && process.env.SLACK_APP_TOKEN) {
 //   https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/anthropic
 //   https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/openai
 const baseUrl = (process.env.AI_GATEWAY_BASE_URL || process.env.ANTHROPIC_BASE_URL || '').replace(/\/+$/, '');
+const apiKey = process.env.AI_GATEWAY_API_KEY;
+
+// Debug: show environment variable status
+console.log('Environment variables:');
+console.log('  AI_GATEWAY_BASE_URL:', process.env.AI_GATEWAY_BASE_URL ? '[SET]' : '[NOT SET]');
+console.log('  ANTHROPIC_BASE_URL:', process.env.ANTHROPIC_BASE_URL ? '[SET]' : '[NOT SET]');
+console.log('  AI_GATEWAY_API_KEY:', apiKey ? '[SET]' : '[NOT SET]');
 
 if (baseUrl) {
     console.log('Configuring Openrouter provider with base URL:', baseUrl);
@@ -107,16 +114,17 @@ if (baseUrl) {
     config.models.providers = config.models.providers || {};
     const providerConfig = {
         baseUrl: baseUrl,
-        apiKey: process.env.AI_GATEWAY_API_KEY,
         api: 'openai-completions',
         models: [
             { id: 'free', name: 'Openrouter free', contextWindow: 200000 },
         ]
     };
-    // Include API key in provider config if set (required when using custom baseUrl)
-    // if (process.env.AI_GATEWAY_API_KEY) {
-    //     providerConfig.apiKey = process.env.AI_GATEWAY_API_KEY;
-    // }
+    // Only include apiKey if it's actually set
+    if (apiKey) {
+        providerConfig.apiKey = apiKey;
+    } else {
+        console.warn('WARNING: AI_GATEWAY_API_KEY is not set! API calls may fail.');
+    }
     config.models.providers.openrouter = providerConfig;
     // Add models to the allowlist so they appear in /models
     config.agents.defaults.models = config.agents.defaults.models || {};
