@@ -116,7 +116,7 @@ if (baseUrl) {
         baseUrl: baseUrl,
         api: 'openai-completions',
         models: [
-            { id: 'free', name: 'Openrouter free', contextWindow: 200000 },
+            { id: 'openrouter/free', name: 'Openrouter free', contextWindow: 200000 },
         ]
     };
     // Only include apiKey if it's actually set
@@ -128,8 +128,8 @@ if (baseUrl) {
     config.models.providers.openrouter = providerConfig;
     // Add models to the allowlist so they appear in /models
     config.agents.defaults.models = config.agents.defaults.models || {};
-    config.agents.defaults.models['openrouter/free'] = { };
-    config.agents.defaults.model.primary = 'openrouter/free';
+    config.agents.defaults.models['openrouter/openrouter/free'] = { };
+    config.agents.defaults.model.primary = 'openrouter/openrouter/free';
 }
 
 // Write updated config
